@@ -1,0 +1,167 @@
+user(loggedInUser(), "firstName")
+& " created on " &
+user(loggedInUser(), "created")
+
+text(datevalue("12/12/21"), "mmmm dd, yyyy") return December 12, 2001)
+
+if( var1 > var2, "var1 is greater than var2", "var2 is grater than var1")
+
+# calculate business days between two dates
+calworkdays(
+  datetime(2021, 7, 1, 0, 0, 0),
+  datetime(2021, 7, 31, 0, 0, 0)
+) 
+# using variable from Rule Input(ri), varible are in "datetime" format
+calworkdays(
+  datevalue(ri!firstDate),
+  datevalue(ri!secondDate)
+)
+
+# checking length of string varible 
+[len() return number of charater in string,
+ lenb() return number of bytes in string,
+ length() return length of array
+if (len(ri!text) > ri!maxLength, "Must not exceed " &maxLength& " charaters", "Thank you for your information")
+
+# function using local variables
+a!localVariables(
+  local!maxMileage: 50000,
+  local!mileage: (ri!initialMileage - ri!returnedMileage),
+  if(
+    local!mileage > local!maxMileage,
+    "Run full diagnostics",
+    "Return to inventory"
+  )
+)
+a!localVariables(
+  local!sum: ri!first + ri!second,
+  "New total sum is " &local!sum
+)
+
+# testing with isNull() function
+if(
+  isnull(ri!var),
+  "Null value",
+  ri!var
+  )
+
+# Array and Dicionary
+{"hi", 123}[1] # indexe start at 1, return [index]
+
+{text:"hi", num: 123}
+index({text:"hi", num: 123}, "text") # return "text" value
+a!map(text:"hi", num: 123).text #return "text" value
+
+# string casting
+toString() - uses in varibale
+touniformstring() - uses in array
+toboolean() - casting number 0 and 1 to boolean value
+todate() - convert string to date, "31-12-2020" to 12/31/2020
+cast() - comvets a value from its existing type to the specified type
+
+# function/object call from other expression rule file
+if(ri!status === "Valid User",
+  rule!W03EP_L2Ex1(), # calling from other expression rule
+  "Invalid User"
+)
+
+if(ri!milestone === "On Schedule",
+  cons!W03EP_Exercise8, # calling from constant file/object
+  "Revise Deadline."
+)
+
+#
+ignoreFilterWithEmptyValues: true/false - if set to ture null return entire list
+
+# Match condictions
+a!match(
+  value: ri!user,
+  whenTrue: isnull(fv!value),
+  then: "",
+  whenTrue: isusernametaken(fv!value),
+  then: proper(
+    user(fv!value, "firstName") & " " & user(fv!value, "lastName")
+  ),
+  default: proper(joinarray(split(fv!value, "."), " "))
+)
+
+# Querying
+a!queryRecordType(
+	recordType:,
+	fields: {}, #a!aggregationFields() to declare aggragation
+	<add on functions>
+	paggingInfo: a!pagingInfo(
+		startIndex: 1,
+		batchSize: 100
+		<add on>
+	)
+).data
+
+#aggregation
+grouppings: {
+	a!grouping(
+		field: ,
+		alais:"column_name"
+	),...
+}
+measures: {
+	a!measure(
+		function: "FUNCTION NAME {COUNT, AVG,..}",
+		field: ,
+		alias: "column_name"
+	), ...
+}
+
+<add on functions>
+#filters
+filters: a!queryLogicalExpression( <logical>
+	operator: "OR/AND/AND_ALL",
+	filters: { <default> 
+		a!queryFilter(
+			field: <var>,
+			operator: "function name", // search queryFilter on Doc
+			value: <var>
+		), ...
+	},
+	ignoreFiltersWithEmptyValue:true  // note this can't be applied with only using default filters function	
+)
+
+# tables relationship
+relatedRecordData: a!relatedRecordData(
+	relationship: <var>,
+	filters: {} <default>
+	<add on>
+)
+
+<add on>
+# sort function
+sort: {  // applied in order
+	a!sortInfo(
+		field: <var>
+	),
+	a!sortInfo(
+		field: <var>,
+		ascending: true/false
+	)
+}
+
+
+# query by record variable
+a!queryRecordByIdentifier(
+	recordType: <var>,
+	identifier: ri!id,
+	fields: {}
+)
+
+
+-----------------------------------------------------------
+
+a!save(<var>, <val>) - <var> identify the record to save and <val> value to save in the record
+
+
+
+		
+
+
+  
+
