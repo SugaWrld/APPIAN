@@ -1,0 +1,21 @@
+# user related
+isusernametaken(var) - check existence of username and return boolean value
+
+recordType! - used to reference a record type object
+rv! - (Record Variable) used to reference record values within the record type
+fv! - (Function Variable) used as a variable input into certain function
+cons! - presuffix to access constant variable
+
+isNullOrEmpty(var) - check whether variable is empty or null
+
+a!queryRecordType() - the function takes record type as an input and return the result of list of data/records
+a!queryRecordByIdentifier() - uses udentifier variable of row, primary key, to return data for that single record
+Querires Selection - usng filters to return selection of dataset
+Aggregation Queries(Grouping returned dataset) can be return using a!aggregationFields(): a!grouping() and a!measure()
+
+AND_ALL - (only avaiable when filtering multiple fields form the one-to-many relation)
+	  Uses to filer by multiple related record fields from the same one-to-many relationship("many"), the filter will return all records from the base record type("one") that have at least one related record that meets each filter condition.
+
+---------------------------------------
+#interface
+rule! - use prefix to declare predefined functions
