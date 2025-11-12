@@ -159,6 +159,23 @@ a!queryRecordByIdentifier(
 a!save(<var>, <val>) - <var> identify the record to save and <val> value to save in the record
 
 
+----------------------------------------------------------
+#Process model (learn more at advance PM course)
+AND gate - excute all the paths
+OR gate - exute the paths when its condition are met
+XOR gate - same as if else statement 
+COMPLEX gate - uses when you want to set if most condition are met then process.
+
+Subprocess: 
+	- runs on the same engine as parent process
+	- runs synchronously or asynchronously
+	- better for tricky functionality
+Startprocess:
+	- runs on the engine with lowest memory usage
+	- better for perfomance 
+	- only runs asynchronously
+
+a!startProcess() - This is the only way to start a process via a portal
 
 		
 
